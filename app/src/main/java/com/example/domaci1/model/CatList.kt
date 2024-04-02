@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
@@ -21,10 +23,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,28 +47,63 @@ fun CatList(
     items: List<Cat>,
     onItemClick: (Cat) -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            Column {
-                CenterAlignedTopAppBar(title = { Text(text = "Cats") })
-                Divider()
-            }
+    val textState = remember { mutableStateOf("") }
+    val filteredItems = remember { mutableStateOf(items) }
+    val focusManager = LocalFocusManager.current
 
-        },
+    Scaffold(
+            topBar = {
+                Column ( )
+                {
+                    CenterAlignedTopAppBar(
+                        title = { Text(text = "Cats") },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Color(0xFFf5d742) // Ovo je svetlo plava boja.
+                        )
+                    )
+                    Divider()
+
+                }
+            },
         content = {
             val scrollState = rememberScrollState()
             Column(
                 modifier = Modifier
                     .verticalScroll(scrollState)
                     .fillMaxSize()
-//                    .fillMaxWidth()
+                    .clickable {focusManager.clearFocus()}
                     .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
+                TextField(
+                    value = textState.value,
+                    onValueChange = { textState.value = it },
+                    label = { Text("Filter Cats") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp)
+                        .padding(bottom = 2.dp)
+                )
 
-                items.forEach {
+                Button(
+                    onClick = {
+                        focusManager.clearFocus()
+                        filteredItems.value = items.filter {
+                            it.name.startsWith(textState.value, ignoreCase = true)
+                        }
+                    },
+                    modifier = Modifier
+                        .width(150.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 14.dp),
+                ) {
+                    Text("Filter")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                filteredItems.value.forEach {
                     Column {
                         key(it.name) {
                             CatListItem(
@@ -76,7 +120,6 @@ fun CatList(
             }
         }
     )
-
 }
 
 @Composable
@@ -92,8 +135,7 @@ private fun CatListItem(
                 onClick()
             },
     ) {
-        Text( // cat name
-            //make text bold
+        Text(            // cat name
             modifier = Modifier.padding(all = 16.dp),
             text = data.name,
             fontWeight = FontWeight.ExtraBold,
@@ -124,20 +166,22 @@ private fun CatListItem(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = null,
             )
-        }
-        Row(modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 8.dp)) { // personality traits
+        }   //personalityTraits
+        Row(modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 8.dp)) { // personality traits
             SuggestionChipExample(data.personalityTraits)
         }
-
     }
 }
+
 fun List<String>.pickRandom(n: Int): List<String> {
+    if (this.size <= n) return this
     return this.shuffled().take(n)
 }
-
 @Composable
 fun SuggestionChipExample(personalityTraits: List<String>) {
-    val randomTraits = personalityTraits.pickRandom(3)
+    val randomTraits = remember { personalityTraits.pickRandom(3) }
     randomTraits.forEach { trait ->
         SuggestionChip(
             modifier = Modifier.padding(end = 4.dp),
