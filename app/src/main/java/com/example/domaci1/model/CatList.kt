@@ -52,19 +52,19 @@ fun CatList(
     val focusManager = LocalFocusManager.current
 
     Scaffold(
-            topBar = {
-                Column ( )
-                {
-                    CenterAlignedTopAppBar(
-                        title = { Text(text = "Cats") },
-                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = Color(0xFFf5d742) // Ovo je svetlo plava boja.
-                        )
+        topBar = {
+            Column ( )
+            {
+                CenterAlignedTopAppBar(
+                    title = { Text(text = "Cats") },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color(0xFFf5d742) // Ovo je svetlo plava boja.
                     )
-                    Divider()
+                )
+                Divider()
 
-                }
-            },
+            }
+        },
         content = {
             val scrollState = rememberScrollState()
             Column(
@@ -86,7 +86,6 @@ fun CatList(
                         .padding(top = 16.dp)
                         .padding(bottom = 2.dp)
                 )
-
                 Button(
                     onClick = {
                         focusManager.clearFocus()

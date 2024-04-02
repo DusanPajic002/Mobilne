@@ -1,6 +1,7 @@
 package com.example.domaci1.model
 
 data class Cat(
+    val id: String,
     val name: String,
     val alternativeNames: List<String>,
     val description: String,
