@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.domaci1.model.CatList
+import com.example.domaci1.model.ScreenManager
 import com.example.domaci1.repository.DataFile
 import com.example.domaci1.repository.Repository
 import com.example.domaci1.ui.theme.Domaci1Theme
@@ -22,11 +23,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Domaci1Theme {
+                ScreenManager(
+                    cats = repository.allCats(),
+                    onUpdate = { },
+                    onDelete = { })
+                }
            /*     CatList(
                     items = repository.allCats(),
                     onItemClick = { }
                 )*/
             }
         }
-    }
 }
