@@ -1,5 +1,6 @@
 package com.example.domaci1.catListP
 
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +19,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +33,6 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +41,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.domaci1.Acore.theme.Domaci1Theme
 import com.example.domaci1.domain.Cat
 import com.example.domaci1.repository.DataFile
-import com.example.domaci1.ui.theme.Domaci1Theme
-
 
 
 @ExperimentalMaterial3Api
@@ -147,7 +145,7 @@ private fun CatsList(
 
         items.forEach {
             Column {
-                key(it.id) {
+                key(it.name) {
                     CatListItem(
                         data = it,
                         onClick = {

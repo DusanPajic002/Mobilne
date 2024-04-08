@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlin.time.Duration.Companion.seconds
 
-class Repository {
+object Repository {
 
     private val cats = MutableStateFlow(listOf<Cat>())
     fun allCats(): List<Cat> = cats.value
@@ -22,7 +22,7 @@ class Repository {
         delay(2.seconds)
         cats.update { DataFile.toMutableList() }
     }
-    suspend fun fetchCatDetails(passwordId: String) {
+    suspend fun fetchCatDetails(catId: String) {
         delay(1.seconds)
     }
     fun observeCatsDetails(catId: String): Flow<Cat?> {

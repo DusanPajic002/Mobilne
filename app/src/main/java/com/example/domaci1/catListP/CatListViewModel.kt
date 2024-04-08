@@ -12,19 +12,17 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class CatListViewModel (
-    private val repository: Repository = Repository()
+    private val repository: Repository = Repository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CatListState())
     val state = _state.asStateFlow()
     private fun setState(reducer: CatListState.() -> CatListState) = _state.getAndUpdate(reducer)
 
-
     init {
         observeCats()
         fetchCats()
     }
-
     private fun observeCats() {
         viewModelScope.launch {
             repository.observeCats().collect {
@@ -32,7 +30,6 @@ class CatListViewModel (
             }
         }
     }
-
     private fun fetchCats() {
         viewModelScope.launch {
             setState { copy(fetching = true) }

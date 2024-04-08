@@ -1,4 +1,4 @@
-package com.example.domaci1.ui.theme
+package com.example.domaci1.Acore.theme
 
 import androidx.compose.ui.graphics.Color
 
