@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,14 +27,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -125,6 +131,7 @@ fun CatList(
     )
 }
 
+@ExperimentalMaterial3Api
 @Composable
 private fun CatsList(
     items: List<Cat>,
@@ -132,6 +139,14 @@ private fun CatsList(
     onItemClick: (Cat) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+
+    val textState = remember { mutableStateOf("") }
+    val filteredItems = remember { mutableStateOf(items) }
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(items) {
+        filteredItems.value = items
+    }
 
     Column(
         modifier = Modifier
@@ -141,9 +156,33 @@ private fun CatsList(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = textState.value,
+            onValueChange = { textState.value = it },
+            label = { Text("Filter Cats") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 2.dp)
+                .padding(top = 8.dp)
+        )
 
-        items.forEach {
+        Button(
+            onClick = {
+                focusManager.clearFocus()
+                filteredItems.value = items.filter {
+                    it.name.startsWith(textState.value, ignoreCase = true)
+                }
+
+            },
+            modifier = Modifier
+                .width(150.dp)
+                .padding(bottom = 14.dp),
+        ) {
+            Text("Filter")
+        }
+
+        filteredItems.value.forEach {
             Column {
                 key(it.name) {
                     CatListItem(
@@ -244,10 +283,10 @@ fun PreviewCatListScreen() {
 }
 
 /*
-TextField(
-                    value = textState.value,
-                    onValueChange = { textState.value = it },
-                    label = { Text("Filter Cats") },
+                TextField(
+                value = textState.value,
+                onValueChange = { textState.value = it },
+                label = { Text("Filter Cats") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
