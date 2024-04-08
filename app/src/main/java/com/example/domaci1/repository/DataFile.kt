@@ -1,6 +1,6 @@
 package com.example.domaci1.repository
 
-import com.example.domaci1.model.Cat
+import com.example.domaci1.domain.Cat
 
 val DataFile = listOf(
     Cat(
@@ -42,7 +42,7 @@ val DataFile = listOf(
     Cat(
         id = "4",
         name = "American Shorthair",
-        alternativeNames = listOf("Domestic Shorthair", "ASH", "DSH", "American Domestic"),
+        alternativeNames = listOf("Domestic Shorthair", "ASH", "DSH", "American Domestic", "Working Cats"),
         description = "The American Shorthair is a breed of domestic cat believed to be descended from European cats brought to North America by early settlers to protect valuable cargo from mice and rats.",
         personalityTraits = listOf("Affectionate", "Curious", "Gentle", "Intelligent", "Playful"),
         origin = "United States",

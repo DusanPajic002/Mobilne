@@ -1,4 +1,4 @@
-package com.example.domaci1.model
+package com.example.domaci1.domain
 
 data class Cat(
     val id: String,
