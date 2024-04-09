@@ -38,6 +38,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.example.domaci1.Acore.compose.NoDataContent
 import com.example.domaci1.breeds.CatProfileUI
 
@@ -152,6 +155,14 @@ private fun CatData(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
+        /*AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(cat.imageUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = "Loaded image",
+            modifier = Modifier.fillMaxSize()
+        )*/
         Text(
             modifier = Modifier
                 .padding(8.dp),

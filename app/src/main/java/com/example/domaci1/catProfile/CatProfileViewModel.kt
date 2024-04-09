@@ -65,6 +65,7 @@ class CatProfileViewModel(
         strangerFriendly = this.stranger_friendly,
         vocalisation = this.vocalisation,
         isRare = this.rare == 1,
-    )
+        //imageUrl = this.image.url,
+        )
 
 }

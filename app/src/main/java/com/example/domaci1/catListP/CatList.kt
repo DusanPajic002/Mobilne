@@ -83,7 +83,7 @@ fun CatList(
             )
         },
         content = {
-            println(state.cats)
+
             CatsList(
                 paddingValues = it,
                 items = state.cats,
@@ -97,7 +97,7 @@ fun CatList(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center,
                         ) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                         }
                     }
 

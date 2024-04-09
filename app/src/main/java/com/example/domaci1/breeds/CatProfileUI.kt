@@ -1,5 +1,6 @@
 package com.example.domaci1.breeds
 
+
 data class CatProfileUI (
     val alt_names: String = "",
     val description: String,
@@ -23,4 +24,5 @@ data class CatProfileUI (
     val strangerFriendly: Int,
     val vocalisation: Int,
     val isRare: Boolean,
+    //val imageUrl: String,
 )
