@@ -1,25 +1,19 @@
 package com.example.domaci1.repository
 
-import com.example.domaci1.networking.breeds.BreedApiModel
-import com.example.domaci1.networking.breeds.BreedsApi
+import com.example.domaci1.breeds.CatApi
+import com.example.domaci1.breeds.CatApiModel
 import rs.edu.raf.rma6.networking.retrofit
 
 object Repository {
 
-    private val breedsApi: BreedsApi = retrofit.create(BreedsApi::class.java)
-    suspend fun fetchAllBreeds(): List<BreedApiModel> {
-        val breeds = breedsApi.getAllBreeds()
-        return breeds
+    private val catsApi: CatApi = retrofit.create(CatApi::class.java)
+    suspend fun fetchAllCats(): List<CatApiModel> {
+        val cats = catsApi.getAllCats()
+        return cats
     }
-/*
-    suspend fun fetchCatDetails(catId: String) {
-        delay(1.seconds)
+    suspend fun fetchCat(catId: String): CatApiModel {
+        val cat = catsApi.getCat(catId)
+        return cat
     }
-    fun observeCatsDetails(catId: String): Flow<Cat?> {
-        return observeCats()
-            .map { cats -> cats.find { it.id == catId } }
-            .distinctUntilChanged()
-    }
-*/
 
 }

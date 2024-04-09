@@ -1,9 +1,9 @@
-package com.example.domaci1.networking.breeds
+package com.example.domaci1.breeds
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BreedApiModel(
+data class CatApiModel(
     val id: String,
     val name: String,
     val cfa_url: String? = null,

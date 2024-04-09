@@ -1,6 +1,6 @@
-package com.example.domaci1.networking.breeds
+package com.example.domaci1.breeds
 
-data class BreedUiModel(
+data class CatListUI(
     val id: String,
     val name: String,
     val alt_names: String = "",

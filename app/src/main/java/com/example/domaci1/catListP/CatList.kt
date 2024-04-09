@@ -40,14 +40,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.domaci1.networking.breeds.BreedUiModel
+import com.example.domaci1.breeds.CatListUI
 
 
 @ExperimentalMaterial3Api
@@ -70,7 +69,7 @@ fun NavGraphBuilder.catListScreen(
 @Composable
 fun CatList(
     state: CatListState,
-    onItemClick: (BreedUiModel) -> Unit,
+    onItemClick: (CatListUI) -> Unit,
 ) {
 
     Scaffold(
@@ -133,9 +132,9 @@ fun CatList(
 @ExperimentalMaterial3Api
 @Composable
 private fun CatsList(
-    items: List<BreedUiModel>,
+    items: List<CatListUI>,
     paddingValues: PaddingValues,
-    onItemClick: (BreedUiModel) -> Unit,
+    onItemClick: (CatListUI) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val textState = remember { mutableStateOf("") }
@@ -215,7 +214,7 @@ fun SuggestionChipExample(personalityTraits: List<String>) {
 
 @Composable
 private fun CatListItem(
-    data: BreedUiModel,
+    data: CatListUI,
     onClick: () -> Unit,
 ) {
     Card(
@@ -265,59 +264,3 @@ private fun CatListItem(
         }
     }
 }
-
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun PreviewCatListScreen() {
-    Domaci1Theme {
-        CatList(
-            state = CatListState(cats = DataFile),
-            onItemClick = {},
-        )
-    }
-}*/
-
-/*
-                TextField(
-                value = textState.value,
-                onValueChange = { textState.value = it },
-                label = { Text("Filter Cats") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)
-                        .padding(bottom = 2.dp)
-                )
-                Button(
-                    onClick = {
-                        focusManager.clearFocus()
-                        filteredItems.value = items.filter {
-                            it.name.startsWith(textState.value, ignoreCase = true)
-                        }
-                    },
-                    modifier = Modifier
-                        .width(150.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 14.dp),
-                ) {
-                    Text("Filter")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                filteredItems.value.forEach {
-                    Column {
-                        key(it.name) {
-                            CatListItem(
-                                data = it,
-                                onClick = {
-                                    onItemClick(it)
-                                },
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
-                }
- */

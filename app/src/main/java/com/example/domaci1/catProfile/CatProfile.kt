@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -40,8 +39,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.domaci1.Acore.compose.NoDataContent
-import com.example.domaci1.Acore.theme.Domaci1Theme
-import com.example.domaci1.networking.breeds.BreedUiModel
+import com.example.domaci1.breeds.CatProfileUI
 
 
 @ExperimentalMaterial3Api
@@ -122,9 +120,9 @@ fun CatProfile(
                         }
                         Text(text = errorMessage)
                     }
-                } else if (state.data != null) {
+                } else if (state.cat != null) {
                     CatData(
-                        cat = state.data,
+                        cat = state.cat,
                     )
                 } else {
                     NoDataContent(id = state.catId)
@@ -137,7 +135,7 @@ fun CatProfile(
 
 @Composable
 private fun CatData(
-    cat: BreedUiModel,
+    cat: CatProfileUI,
 ) {
     val scrollState = rememberScrollState()
     Card(
@@ -154,7 +152,7 @@ private fun CatData(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-      /*  Text(
+        Text(
             modifier = Modifier
                 .padding(8.dp),
             text = "Rarity:  " + cat.isRare,
@@ -163,13 +161,13 @@ private fun CatData(
         Text(
             modifier = Modifier
                 .padding(8.dp),
-            text = "Origin:  " + cat.origin,
+            text = "Origin:  " + cat.originCountries.joinToString(", "),
             fontSize = 18.sp,
         )
         Text(
             modifier = Modifier
                 .padding(8.dp),
-            text = "Size:  " + cat.size,
+            text = "Size:  " + cat.averageWeight,
             fontSize = 18.sp,
         )
         Text(
@@ -181,9 +179,18 @@ private fun CatData(
         Text(
             modifier = Modifier
                 .padding(8.dp),
-            text = "Personality:  " + cat.personalityTraits.joinToString(", "),
+            text = "Personality:  " + cat.temperamentTraits.joinToString(", "),
             fontSize = 18.sp,
-        )*/
+        )
+        Text(
+            modifier = Modifier.padding(8.dp),
+            text = "Adaptability: ${cat.adaptability}\n" +
+                    "Affection Level: ${cat.affectionLevel}\n" +
+                    "Child Friendly: ${cat.childFriendly}\n" +
+                    "Dog Friendly: ${cat.dogFriendly}\n" +
+                    "Energy Level: ${cat.energyLevel}",
+            fontSize = 18.sp
+        )
         Text(
             modifier = Modifier
                 .padding(8.dp),
@@ -192,13 +199,13 @@ private fun CatData(
         )
 
         val context = LocalContext.current
-       /* Button(
+        Button(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
                 .size(120.dp, 40.dp),
             onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(cat.wikiUrl))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(cat.wikipedia_url))
                 context.startActivity(intent)
             },
             contentPadding = PaddingValues(all = 8.dp),
@@ -207,20 +214,6 @@ private fun CatData(
                 text = "Wiki",
                 fontSize = 16.sp,
             )
-        }*/
+        }
     }
 }
-
-/*
-
-@Preview
-@Composable
-fun PreviewCatProfileScreen() {
-    Domaci1Theme {
-        CatProfile(
-            state = CatProfileState(catId = DataFile[0].id),
-            onClose = {},
-        )
-
-    }
-}*/

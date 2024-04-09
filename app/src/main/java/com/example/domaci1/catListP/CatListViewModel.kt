@@ -2,8 +2,8 @@ package com.example.domaci1.catListP
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domaci1.networking.breeds.BreedApiModel
-import com.example.domaci1.networking.breeds.BreedUiModel
+import com.example.domaci1.breeds.CatApiModel
+import com.example.domaci1.breeds.CatListUI
 import com.example.domaci1.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +29,7 @@ class CatListViewModel (
             setState { copy(fetching = true) }
             try {
                 val cats = withContext(Dispatchers.IO) {
-                    repository.fetchAllBreeds().map { it.asBreedUiModel() }
+                    repository.fetchAllCats().map { it.asCatUiModel() }
                 }
                 setState { copy(cats = cats ) }
             } catch (error: Exception) {
@@ -40,7 +40,7 @@ class CatListViewModel (
         }
     }
 
-    private fun BreedApiModel.asBreedUiModel() = BreedUiModel(
+    private fun CatApiModel.asCatUiModel() = CatListUI(
         id = this.id,
         name = this.name,
         alt_names = this.alt_names ,

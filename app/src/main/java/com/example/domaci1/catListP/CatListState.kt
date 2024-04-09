@@ -1,10 +1,10 @@
 package com.example.domaci1.catListP
 
-import com.example.domaci1.networking.breeds.BreedUiModel
+import com.example.domaci1.breeds.CatListUI
 
 data class CatListState(
     val fetching: Boolean = false,
-    val cats: List<BreedUiModel> = emptyList(),
+    val cats: List<CatListUI> = emptyList(),
     val error: ListError? = null
 ) {
     sealed class ListError {

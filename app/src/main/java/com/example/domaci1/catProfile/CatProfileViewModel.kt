@@ -2,15 +2,15 @@ package com.example.domaci1.catProfile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domaci1.breeds.CatApiModel
+import com.example.domaci1.breeds.CatProfileUI
 import com.example.domaci1.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class CatProfileViewModel(
     private val catId: String,
@@ -23,17 +23,17 @@ class CatProfileViewModel(
         _state.getAndUpdate(reducer)
 
     init {
-        fetchCat()
+        fetchCats()
     }
 
     private fun fetchCats() {
         viewModelScope.launch {
             setState { copy(fetching = true) }
             try {
-                val cats = withContext(Dispatchers.IO) {
-                    repository.fetchAllBreeds().map { it.asBreedUiModel() }
+                val catt = withContext(Dispatchers.IO) {
+                    repository.fetchCat(catId).asCatUiModel()
                 }
-                setState { copy(cats = cats ) }
+                setState { copy(cat = catt ) }
             } catch (error: Exception) {
                 // TODO Handle error
             } finally {
@@ -42,15 +42,29 @@ class CatProfileViewModel(
         }
     }
 
-  /*  private fun observeCatProfile() {
-        viewModelScope.launch {
-            repository.observeCatsDetails(catId = catId)
-                .filterNotNull()
-                .collect {
-                    setState { copy(data = it) }
-                }
-        }
-    }*/
-
+    private fun CatApiModel.asCatUiModel() = CatProfileUI(
+        alt_names = this.alt_names,
+        description = this.description,
+        wikipedia_url = this.wikipedia_url,
+        name = this.name,
+        fullDescription = this.description,
+        originCountries = this.origin.split(", "),
+        temperamentTraits = this.temperament.split(", "),
+        lifeSpan = this.life_span,
+        averageWeight = this.weight.metric,
+        adaptability = this.adaptability,
+        affectionLevel = this.affection_level,
+        childFriendly = this.child_friendly,
+        dogFriendly = this.dog_friendly,
+        energyLevel = this.energy_level,
+        grooming = this.grooming,
+        healthIssues = this.health_issues,
+        intelligence = this.intelligence,
+        sheddingLevel = this.shedding_level,
+        socialNeeds = this.social_needs,
+        strangerFriendly = this.stranger_friendly,
+        vocalisation = this.vocalisation,
+        isRare = this.rare == 1,
+    )
 
 }
