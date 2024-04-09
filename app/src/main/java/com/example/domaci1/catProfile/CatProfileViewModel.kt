@@ -23,11 +23,26 @@ class CatProfileViewModel(
         _state.getAndUpdate(reducer)
 
     init {
-        observeCatProfile()
-        fetchCatProfile()
+        fetchCat()
     }
 
-    private fun observeCatProfile() {
+    private fun fetchCats() {
+        viewModelScope.launch {
+            setState { copy(fetching = true) }
+            try {
+                val cats = withContext(Dispatchers.IO) {
+                    repository.fetchAllBreeds().map { it.asBreedUiModel() }
+                }
+                setState { copy(cats = cats ) }
+            } catch (error: Exception) {
+                // TODO Handle error
+            } finally {
+                setState { copy(fetching = false) }
+            }
+        }
+    }
+
+  /*  private fun observeCatProfile() {
         viewModelScope.launch {
             repository.observeCatsDetails(catId = catId)
                 .filterNotNull()
@@ -35,22 +50,7 @@ class CatProfileViewModel(
                     setState { copy(data = it) }
                 }
         }
-    }
+    }*/
 
-    private fun fetchCatProfile() {
-        viewModelScope.launch {
-            setState { copy(fetching = true) }
-            try {
-                withContext(Dispatchers.IO) {
-                    repository.fetchCatDetails(catId = catId)
-                }
-            } catch (error: IOException) {
-                setState {
-                    copy(error = CatProfileState.DetailsError.DataUpdateFailed(cause = error))
-                }
-            } finally {
-                setState { copy(fetching = false) }
-            }
-        }
-    }
+
 }

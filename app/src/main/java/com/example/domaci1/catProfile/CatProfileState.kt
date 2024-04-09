@@ -1,11 +1,11 @@
 package com.example.domaci1.catProfile
 
-import com.example.domaci1.domain.Cat
+import com.example.domaci1.networking.breeds.BreedUiModel
 
 data class CatProfileState (
     val catId: String,
     val fetching: Boolean = false,
-    val data: Cat? = null,
+    val data: BreedUiModel? = null,
     val error: DetailsError? = null,
 ) {
     sealed class DetailsError {

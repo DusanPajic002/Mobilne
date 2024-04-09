@@ -12,6 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Domaci1Theme {
+
                 ScreenManager()
             }
         }

@@ -1,14 +1,11 @@
 package com.example.domaci1.catProfile
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -23,9 +20,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,9 +40,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.domaci1.Acore.compose.NoDataContent
-import com.example.domaci1.domain.Cat
-import com.example.domaci1.repository.DataFile
 import com.example.domaci1.Acore.theme.Domaci1Theme
+import com.example.domaci1.networking.breeds.BreedUiModel
 
 
 @ExperimentalMaterial3Api
@@ -143,7 +137,7 @@ fun CatProfile(
 
 @Composable
 private fun CatData(
-    cat: Cat,
+    cat: BreedUiModel,
 ) {
     val scrollState = rememberScrollState()
     Card(
@@ -160,7 +154,7 @@ private fun CatData(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-        Text(
+      /*  Text(
             modifier = Modifier
                 .padding(8.dp),
             text = "Rarity:  " + cat.isRare,
@@ -189,7 +183,7 @@ private fun CatData(
                 .padding(8.dp),
             text = "Personality:  " + cat.personalityTraits.joinToString(", "),
             fontSize = 18.sp,
-        )
+        )*/
         Text(
             modifier = Modifier
                 .padding(8.dp),
@@ -198,7 +192,7 @@ private fun CatData(
         )
 
         val context = LocalContext.current
-        Button(
+       /* Button(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.CenterHorizontally)
@@ -213,10 +207,11 @@ private fun CatData(
                 text = "Wiki",
                 fontSize = 16.sp,
             )
-        }
+        }*/
     }
 }
 
+/*
 
 @Preview
 @Composable
@@ -228,4 +223,4 @@ fun PreviewCatProfileScreen() {
         )
 
     }
-}
+}*/

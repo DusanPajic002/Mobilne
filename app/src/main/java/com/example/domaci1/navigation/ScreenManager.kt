@@ -22,10 +22,10 @@ fun ScreenManager() {
             route = "cats",
             navController = navController,
         )
-        catProfileScreen(
+       /* catProfileScreen(
             route = "cat/{id}",
             navController = navController,
-        )
+        )*/
 
     }
 

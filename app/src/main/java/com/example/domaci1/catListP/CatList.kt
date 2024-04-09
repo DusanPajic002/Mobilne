@@ -47,9 +47,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.domaci1.Acore.theme.Domaci1Theme
-import com.example.domaci1.domain.Cat
-import com.example.domaci1.repository.DataFile
+import com.example.domaci1.networking.breeds.BreedUiModel
 
 
 @ExperimentalMaterial3Api
@@ -72,7 +70,7 @@ fun NavGraphBuilder.catListScreen(
 @Composable
 fun CatList(
     state: CatListState,
-    onItemClick: (Cat) -> Unit,
+    onItemClick: (BreedUiModel) -> Unit,
 ) {
 
     Scaffold(
@@ -86,6 +84,7 @@ fun CatList(
             )
         },
         content = {
+            println(state.cats)
             CatsList(
                 paddingValues = it,
                 items = state.cats,
@@ -134,12 +133,11 @@ fun CatList(
 @ExperimentalMaterial3Api
 @Composable
 private fun CatsList(
-    items: List<Cat>,
+    items: List<BreedUiModel>,
     paddingValues: PaddingValues,
-    onItemClick: (Cat) -> Unit,
+    onItemClick: (BreedUiModel) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-
     val textState = remember { mutableStateOf("") }
     val filteredItems = remember { mutableStateOf(items) }
     val focusManager = LocalFocusManager.current
@@ -217,7 +215,7 @@ fun SuggestionChipExample(personalityTraits: List<String>) {
 
 @Composable
 private fun CatListItem(
-    data: Cat,
+    data: BreedUiModel,
     onClick: () -> Unit,
 ) {
     Card(
@@ -240,7 +238,7 @@ private fun CatListItem(
                     .padding(horizontal = 16.dp)
                     .padding(bottom = 8.dp)
                     .weight(weight = 1f),
-                text = data.alternativeNames.joinToString(", "),
+                text = data.alt_names,
             )
         }
         Row { // description
@@ -263,13 +261,13 @@ private fun CatListItem(
         Row(modifier = Modifier
             .padding(horizontal = 16.dp)
             .padding(bottom = 8.dp)) { // personality traits
-            SuggestionChipExample(data.personalityTraits)
+            SuggestionChipExample(data.temperament)
         }
     }
 }
 
 
-
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
@@ -280,7 +278,7 @@ fun PreviewCatListScreen() {
             onItemClick = {},
         )
     }
-}
+}*/
 
 /*
                 TextField(
