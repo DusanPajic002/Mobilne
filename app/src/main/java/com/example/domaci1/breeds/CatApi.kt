@@ -9,5 +9,7 @@ interface CatApi {
     suspend fun getAllCats(): List<CatApiModel>
     @GET("breeds/{breedId}")
     suspend fun getCat(@Path("breedId") catId: String): CatApiModel
+    @GET("images/{imageId}")
+    suspend fun get_image_id(@Path("imageId") imageId: String): ImageApiModel
 
 }

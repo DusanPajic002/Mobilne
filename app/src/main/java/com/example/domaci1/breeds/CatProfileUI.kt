@@ -23,6 +23,7 @@ data class CatProfileUI (
     val socialNeeds: Int,
     val strangerFriendly: Int,
     val vocalisation: Int,
+    val reference_image_id: String,
     val isRare: Boolean,
     //val imageUrl: String,
 )

@@ -1,5 +1,6 @@
 package com.example.domaci1.catProfile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domaci1.breeds.CatApiModel
@@ -33,7 +34,12 @@ class CatProfileViewModel(
                 val catt = withContext(Dispatchers.IO) {
                     repository.fetchCat(catId).asCatUiModel()
                 }
+                Log.d("CATTTA",catt.toString())
+                val image = withContext(Dispatchers.IO) {
+                    repository.fetchCatImages(catt.reference_image_id)
+                }
                 setState { copy(cat = catt ) }
+                setState { copy(image = image.url ) }
             } catch (error: Exception) {
                 // TODO Handle error
             } finally {
@@ -64,8 +70,8 @@ class CatProfileViewModel(
         socialNeeds = this.social_needs,
         strangerFriendly = this.stranger_friendly,
         vocalisation = this.vocalisation,
+        reference_image_id = this.reference_image_id?:"",
         isRare = this.rare == 1,
-        //imageUrl = this.image.url,
-        )
+    )
 
 }

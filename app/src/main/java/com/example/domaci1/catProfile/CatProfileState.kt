@@ -6,6 +6,7 @@ data class CatProfileState (
     val catId: String,
     val fetching: Boolean = false,
     val cat: CatProfileUI? = null,
+    val image: String? = null,
     val error: DetailsError? = null,
 ) {
     sealed class DetailsError {

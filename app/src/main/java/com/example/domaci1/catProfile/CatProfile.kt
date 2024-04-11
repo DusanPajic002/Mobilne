@@ -126,6 +126,7 @@ fun CatProfile(
                 } else if (state.cat != null) {
                     CatData(
                         cat = state.cat,
+                        imageUrl = state.image ?: ""
                     )
                 } else {
                     NoDataContent(id = state.catId)
@@ -139,6 +140,7 @@ fun CatProfile(
 @Composable
 private fun CatData(
     cat: CatProfileUI,
+    imageUrl: String,
 ) {
     val scrollState = rememberScrollState()
     Card(
@@ -155,14 +157,14 @@ private fun CatData(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )
-        /*AsyncImage(
+        AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(cat.imageUrl)
+                .data(imageUrl)
                 .crossfade(true)
                 .build(),
             contentDescription = "Loaded image",
             modifier = Modifier.fillMaxSize()
-        )*/
+        )
         Text(
             modifier = Modifier
                 .padding(8.dp),

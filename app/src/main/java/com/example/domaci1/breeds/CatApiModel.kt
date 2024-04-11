@@ -40,8 +40,8 @@ data class CatApiModel(
     val wikipedia_url: String? = null,
     val hypoallergenic: Int,
     val reference_image_id: String? = null,
+    val url: String = "",
     val weight: Weight,
-    //val image: Image,
 )
 
 @Serializable
@@ -49,11 +49,3 @@ data class Weight(
     val imperial: String,
     val metric: String
 )
-/*
-@Serializable
-data class Image(
-    val id: String,
-    val width: Int,
-    val height: Int,
-    val url: String ? = null,
-)*/
