@@ -128,8 +128,6 @@ fun CatProfile(
                         cat = state.cat,
                         imageUrl = state.image ?: ""
                     )
-                } else {
-                    NoDataContent(id = state.catId)
                 }
             }
 

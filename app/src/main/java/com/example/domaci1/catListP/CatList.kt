@@ -121,13 +121,6 @@ fun CatList(
                                 }
                                 Text(text = errorMessage)
                             }
-                        } else {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(text = "No cats.")
-                            }
                         }
                     }
                 }

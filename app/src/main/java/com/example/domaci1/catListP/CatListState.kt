@@ -7,7 +7,6 @@ data class CatListState(
     val cats: List<CatListUI> = emptyList(),
     val error: ListError? = null,
     val filter: String = "",
-    //val filterClick: Boolean = false,
     val filteredCats: List<CatListUI> = emptyList(),
 ) {
     sealed class FilterEvent {

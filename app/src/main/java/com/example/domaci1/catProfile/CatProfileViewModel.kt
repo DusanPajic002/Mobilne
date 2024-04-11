@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domaci1.breeds.CatApiModel
 import com.example.domaci1.breeds.CatProfileUI
+import com.example.domaci1.catListP.CatListState
 import com.example.domaci1.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,7 @@ class CatProfileViewModel(
                 setState { copy(cat = catt ) }
                 setState { copy(image = image.url ) }
             } catch (error: Exception) {
-                // TODO Handle error
+                setState { copy(error = CatProfileState.DetailsError.DataUpdateFailed(cause = error)) }
             } finally {
                 setState { copy(fetching = false) }
             }

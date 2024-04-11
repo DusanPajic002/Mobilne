@@ -67,7 +67,7 @@ class CatListViewModel (
                 setState { copy(cats = cats ) }
                 setState { copy(filteredCats = cats ) }
             } catch (error: Exception) {
-                // TODO Handle error
+                setState { copy(error = CatListState.ListError.ListUpdateFailed(cause = error)) }
             } finally {
                 setState { copy(fetching = false) }
             }
