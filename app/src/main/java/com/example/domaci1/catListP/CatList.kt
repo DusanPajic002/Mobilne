@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -23,6 +24,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
@@ -59,6 +61,9 @@ fun NavGraphBuilder.catListScreen(
 
     CatList(
         state = state,
+        eventPublisher = {
+            catListViewModel.setEvent(it)
+        },
         onItemClick = {
             navController.navigate(route = "cat/${it.id}")
         },
@@ -69,6 +74,7 @@ fun NavGraphBuilder.catListScreen(
 @Composable
 fun CatList(
     state: CatListState,
+    eventPublisher: (CatListState.FilterEvent) -> Unit,
     onItemClick: (CatListUI) -> Unit,
 ) {
 
@@ -86,7 +92,9 @@ fun CatList(
 
             CatsList(
                 paddingValues = it,
-                items = state.cats,
+                items = state.filteredCats,
+                textfilt = state.filter,
+                eventPublisher = eventPublisher,
                 onItemClick = onItemClick,
             )
 
@@ -134,42 +142,49 @@ fun CatList(
 private fun CatsList(
     items: List<CatListUI>,
     paddingValues: PaddingValues,
+    eventPublisher: (CatListState.FilterEvent) -> Unit,
+    textfilt: String,
     onItemClick: (CatListUI) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    val textState = remember { mutableStateOf("") }
-    val filteredItems = remember { mutableStateOf(items) }
     val focusManager = LocalFocusManager.current
-
-    LaunchedEffect(items) {
-        filteredItems.value = items
-    }
 
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
             .fillMaxSize()
-            .padding(paddingValues),
+            .padding(paddingValues)
+            .clickable { focusManager.clearFocus() },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         TextField(
-            value = textState.value,
-            onValueChange = { textState.value = it },
+            value = textfilt,
+            onValueChange = {
+                eventPublisher(CatListState.FilterEvent.filterEvent(it))
+            },
             label = { Text("Filter Cats") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 2.dp)
-                .padding(top = 8.dp)
+                .padding(top = 8.dp),
+            trailingIcon = {
+                if (textfilt.isNotEmpty()) {
+                    IconButton(onClick = {
+                        eventPublisher(CatListState.FilterEvent.filterEvent(""))
+                        eventPublisher(CatListState.FilterEvent.filterClick)
+                    }) {
+                        Icon(Icons.Default.Clear, contentDescription = "Clear text")
+                    }
+                }
+            }
         )
 
         Button(
             onClick = {
                 focusManager.clearFocus()
-                filteredItems.value = items.filter {
-                    it.name.startsWith(textState.value, ignoreCase = true)
-                }
+                eventPublisher(CatListState.FilterEvent.filterClick)
 
             },
             modifier = Modifier
@@ -179,7 +194,7 @@ private fun CatsList(
             Text("Filter")
         }
 
-        filteredItems.value.forEach {
+        items.forEach {
             Column {
                 key(it.name) {
                     CatListItem(

@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domaci1.breeds.CatApiModel
 import com.example.domaci1.breeds.CatListUI
+import com.example.domaci1.catListP.CatListState.FilterEvent
 import com.example.domaci1.repository.Repository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -20,8 +22,39 @@ class CatListViewModel (
     val state = _state.asStateFlow()
     private fun setState(reducer: CatListState.() -> CatListState) = _state.getAndUpdate(reducer)
 
+    private val events = MutableSharedFlow<FilterEvent>()
+    fun setEvent(event: FilterEvent) = viewModelScope.launch { events.emit(event) }
+
     init {
+        observeEvents()
         fetchCats()
+    }
+
+    private fun observeEvents() {
+        viewModelScope.launch {
+            events.collect {
+                when (it) {
+                    is FilterEvent.filterClick -> {filterEvent(filter = state.value.filter)}
+                    is FilterEvent.filterEvent -> {
+                        setState {
+                            copy(filter = it.textfilt)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun filterEvent(filter: String){
+        viewModelScope.launch {
+            try {
+                if(filter.equals(""))
+                    setState { copy(filteredCats = state.value.cats) }
+                else
+                    setState { copy(filteredCats = state.value.cats.filter { it.name.startsWith(filter, ignoreCase = true) }) }
+            } catch (error: Exception) {
+            }
+        }
     }
 
     private fun fetchCats() {
@@ -32,6 +65,7 @@ class CatListViewModel (
                     repository.fetchAllCats().map { it.asCatUiModel() }
                 }
                 setState { copy(cats = cats ) }
+                setState { copy(filteredCats = cats ) }
             } catch (error: Exception) {
                 // TODO Handle error
             } finally {
